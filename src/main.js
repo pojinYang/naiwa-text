@@ -23,6 +23,7 @@ const els = {
 function readOptions() {
   return {
     style: document.querySelector('input[name="style"]:checked').value,
+    font: document.querySelector('input[name="font"]:checked').value,
     thickness: Number(els.thickness.value),
     jitter: Number(els.jitter.value),
     color: els.color.value,

@@ -70,7 +70,7 @@ export function figure(fig, width, opts, random) {
 
   const total = polylineLength(fig.pts);
   const into = pointAt(fig.pts, Math.min(w * 0.3, total / 2)).dir;
-  let parts = `<path d="${smoothPath(fig.pts)}" stroke="${color}" stroke-width="${r(w)}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+  let parts = `<path d="${smoothPath(fig.pts, opts.font === 'hei' ? 0 : 0.5)}" stroke="${color}" stroke-width="${r(w)}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
 
   if (limbs) {
     const tail = fig.pts[fig.pts.length - 1];
@@ -104,7 +104,7 @@ export function tube(stroke, width, opts, random) {
   const total = polylineLength(pts);
   const body = total < w * 0.4
     ? line(pts[0], add(pts[0], { x: 0, y: w * 0.1 }), w * 1.02, color)
-    : `<path d="${smoothPath(pts)}" stroke="${color}" stroke-width="${r(w)}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+    : `<path d="${smoothPath(pts, opts.font === 'hei' ? 0 : 0.5)}" stroke="${color}" stroke-width="${r(w)}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
 
   const up = { x: 0, y: -1 };
   const into = total > 0 ? norm(sub(pointAt(pts, Math.min(w * 0.3, total)).point, pts[0])) : { x: 0, y: 1 };

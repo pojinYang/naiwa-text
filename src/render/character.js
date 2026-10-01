@@ -10,7 +10,7 @@ export function renderCharacter(data, char, opts) {
   const width = bodyWidth(data, opts);
   const random = rng(char.codePointAt(0) * 7919 + (opts.seed || 0));
   if (opts.style === 'noodle') {
-    return noodleStrokes(data.medians, width).map((s) => tube(s, width, opts, random)).join('');
+    return noodleStrokes(data.medians, width, opts.font).map((s) => tube(s, width, opts, random)).join('');
   }
-  return blockFigures(data.medians, width).map((f) => figure(f, width, opts, random)).join('');
+  return blockFigures(data.medians, width, opts.font).map((f) => figure(f, width, opts, random)).join('');
 }

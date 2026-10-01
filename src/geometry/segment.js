@@ -1,5 +1,6 @@
 import { toSvgMedian, sub, dist, len, polylineLength, slice, pointAt } from './transform.js';
 import { simplify } from './simplify.js';
+import { heiify } from './hei.js';
 
 // Absolute turning angle (degrees) at b when walking a -> b -> c.
 export function turnAngle(a, b, c) {
@@ -10,7 +11,8 @@ export function turnAngle(a, b, c) {
 }
 
 // Median -> simplified SVG-space polyline with the tiny entry/exit ticks removed.
-export function prepareStroke(median, width, epsilon = 14) {
+// font 'hei' additionally straightens the Kai skeleton (see hei.js).
+export function prepareStroke(median, width, font = 'kai', epsilon = 14) {
   let pts = simplify(toSvgMedian(median), epsilon);
   const tick = width * 0.4;
   if (pts.length > 2 && dist(pts[0], pts[1]) < tick && turnAngle(pts[0], pts[1], pts[2]) > 35) {
@@ -20,7 +22,7 @@ export function prepareStroke(median, width, epsilon = 14) {
   if (n > 2 && dist(pts[n - 2], pts[n - 1]) < tick && turnAngle(pts[n - 3], pts[n - 2], pts[n - 1]) > 35) {
     pts = pts.slice(0, -1);
   }
-  return pts;
+  return font === 'hei' ? heiify(pts, width) : pts;
 }
 
 // Indices of vertices where the stroke turns sharply (folds such as 橫折, hooks).
@@ -89,10 +91,10 @@ export function orientHead(pts) {
 }
 
 // Character data -> list of figures for the block style.
-export function blockFigures(medians, width) {
+export function blockFigures(medians, width, font = 'kai') {
   const figures = [];
   medians.forEach((median, strokeIndex) => {
-    const pts = prepareStroke(median, width);
+    const pts = prepareStroke(median, width, font);
     if (polylineLength(pts) < width * 0.7) {
       figures.push({ kind: 'dot', strokeIndex, pts });
       return;
@@ -107,10 +109,10 @@ export function blockFigures(medians, width) {
 }
 
 // Character data -> list of tubes (one per stroke) for the noodle style.
-export function noodleStrokes(medians, width) {
+export function noodleStrokes(medians, width, font = 'kai') {
   return medians.map((median, strokeIndex) => {
-    const pts = prepareStroke(median, width);
-    return { strokeIndex, pts, corners: cornerIndices(pts, 50, width * 0.45) };
+    const pts = prepareStroke(median, width, font);
+    return { strokeIndex, pts, font, corners: cornerIndices(pts, 50, width * 0.45) };
   });
 }
 

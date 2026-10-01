@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { simplify } from '../src/geometry/simplify.js';
 import { smoothPath } from '../src/geometry/smooth.js';
 import { polylineLength } from '../src/geometry/transform.js';
+import { heiify } from '../src/geometry/hei.js';
 import {
   turnAngle, prepareStroke, splitAtCorners, splitLong, orientHead, blockFigures, defaultWidth,
 } from '../src/geometry/segment.js';
@@ -74,5 +75,36 @@ describe('smoothPath', () => {
   it('emits one cubic per segment', () => {
     const d = smoothPath([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }]);
     expect(d.match(/C/g)).toHaveLength(2);
+  });
+});
+
+describe('heiify', () => {
+  it('snaps a slightly rising 橫 to exact horizontal', () => {
+    const out = heiify([{ x: 0, y: 100 }, { x: 300, y: 70 }], 100);
+    expect(out[0].y).toBe(out[1].y);
+  });
+
+  it('keeps 橫折 connected while making both legs axis-aligned', () => {
+    const out = heiify([{ x: 0, y: 10 }, { x: 300, y: 0 }, { x: 290, y: 300 }], 100);
+    expect(out).toHaveLength(3);
+    expect(out[0].y).toBe(out[1].y);
+    expect(out[1].x).toBe(out[2].x);
+  });
+
+  it('leaves real diagonals (撇) alone', () => {
+    const pts = [{ x: 300, y: 0 }, { x: 0, y: 300 }];
+    expect(heiify(pts, 100)).toEqual(pts);
+  });
+
+  it('makes every 口 stroke axis-aligned', () => {
+    const w = defaultWidth(3);
+    for (const median of KOU) {
+      const pts = prepareStroke(median, w, 'hei');
+      for (let i = 1; i < pts.length; i++) {
+        const dx = Math.abs(pts[i].x - pts[i - 1].x);
+        const dy = Math.abs(pts[i].y - pts[i - 1].y);
+        expect(Math.min(dx, dy)).toBeLessThan(1e-9);
+      }
+    }
   });
 });
