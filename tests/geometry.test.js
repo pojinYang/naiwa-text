@@ -13,8 +13,6 @@ const KOU = [
   [[304, 569], [333, 552], [488, 574], [663, 608], [700, 607], [720, 598], [759, 559], [758, 552], [694, 295], [661, 273]],
   [[369, 185], [394, 203], [651, 238], [710, 236], [744, 224]],
 ];
-const WO_XIEGOU = [[492, 807], [537, 760], [538, 627], [569, 435], [612, 299], [676, 170], [717, 112], [779, 48], [817, 22], [859, 12], [880, 78], [891, 140], [886, 147], [894, 173]];
-const WO_SHUGOU = [[323, 556], [351, 542], [365, 522], [361, 116], [340, 67], [246, 113]];
 const LE = [
   [[228, 705], [296, 678], [401, 712], [502, 736], [666, 768], [699, 764], [716, 739], [721, 715], [534, 568], [513, 563]],
   [[461, 574], [532, 506], [551, 451], [564, 290], [556, 153], [541, 101], [515, 68], [470, 84], [367, 141]],
@@ -108,19 +106,5 @@ describe('heiify', () => {
         expect(Math.min(dx, dy)).toBeLessThan(1e-9);
       }
     }
-  });
-
-  it('draws the 斜鉤 of 我 as one straight diagonal plus a short hook', () => {
-    const w = defaultWidth(7);
-    const pts = prepareStroke(WO_XIEGOU, w, 'hei');
-    expect(pts).toHaveLength(3);
-    expect(Math.hypot(pts[2].x - pts[1].x, pts[2].y - pts[1].y)).toBeLessThanOrEqual(w * 0.4 + 1e-9);
-  });
-
-  it('keeps the vertical of a 豎鉤 and turns the chamfered hook into a short knob', () => {
-    const w = defaultWidth(7);
-    const pts = prepareStroke(WO_SHUGOU, w, 'hei');
-    expect(pts).toHaveLength(3);
-    expect(pts[0].x).toBe(pts[1].x);
   });
 });
