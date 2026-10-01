@@ -17,7 +17,7 @@ Vite + 原生 JS，渲染結果是一整段 SVG 字串（同一份字串用於�
   - `medians` = 每筆中心線（書寫方向），是奶蛙身體骨架；`strokes`（外框）目前沒用到。
   - 流程：RDP 簡化 → 去掉頭尾小頓筆 → 轉角偵測（以前後固定弧長量轉角，處理圓角的橫折）→ 切段 → 過長再等分 → `orientHead` 讓臉不會倒過來。
   - `defaultWidth(筆畫數)` 決定身體粗細，筆畫越多越瘦。
-  - 字形「黑體」（預設）沒有真正的黑體資料，是 `hei.js` 把楷書骨架黑體化：較大 ε 拉直弧線、去掉起筆、橫折的斜角收成直角、近水平／垂直的段落對齊座標軸；渲染時改用直線（`smoothPath` tension 0）。目前沒有 Make Me a Hanzi 的黑體 fork（2026-10 查過）。
+  - 字形「黑體」（預設）沒有真正的黑體資料，是 `hei.js` 把楷書骨架黑體化：較大 ε 拉直弧線（往右下的斜鉤、捺整筆拉直；貼近軸線的豎撇保留豎的部分）、去掉起筆、橫折的斜角收成直角、近水平／垂直的段落對齊座標軸、鉤縮短成小凸點；渲染時改用直線（`smoothPath` tension 0）。目前沒有 Make Me a Hanzi 的黑體 fork（2026-10 查過）。
 - `src/render/`
   - `defs.js` — 假立體 SVG filter（alpha 模糊當高度圖 + diffuse/specular lighting + 陰影）。filter 區域必須用 `userSpaceOnUse`，否則水平直線的 bbox 高度為 0 會被裁掉。
   - `naiwa.js` — 單隻奶蛙（積木風 `figure`）與一筆一條（麵條風 `tube`）、臉、手腳、種子亂數抖動。
