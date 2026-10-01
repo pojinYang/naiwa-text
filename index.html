@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>奶蛙文字產生器</title>
+    <meta name="description" content="輸入中文字，自動用奶蛙拼出來，並下載成圖片。" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='6' width='36' height='54' rx='18' fill='%23f2d24b'/%3E%3Ccircle cx='25' cy='24' r='4' fill='%2317201b'/%3E%3Ccircle cx='39' cy='24' r='4' fill='%2317201b'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>奶蛙文字產生器</h1>
+      <p>輸入中文字，奶蛙們會排隊把字拼出來。</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel" aria-label="設定">
+        <label class="field">
+          <span>文字</span>
+          <textarea id="text" rows="2" maxlength="60" spellcheck="false">我想你了</textarea>
+        </label>
+
+        <div class="field">
+          <span>風格</span>
+          <div class="segmented" role="radiogroup">
+            <label><input type="radio" name="style" value="block" checked /><span>積木風</span></label>
+            <label><input type="radio" name="style" value="noodle" /><span>麵條風</span></label>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>胖瘦 <output id="thickness-out">100%</output></span>
+          <input id="thickness" type="range" min="0.7" max="1.4" step="0.05" value="1" />
+        </label>
+
+        <label class="field">
+          <span>歪歪程度 <output id="jitter-out">50%</output></span>
+          <input id="jitter" type="range" min="0" max="1" step="0.1" value="0.5" />
+        </label>
+
+        <div class="row">
+          <label class="field compact">
+            <span>每行字數</span>
+            <input id="per-row" type="number" min="1" max="12" value="4" />
+          </label>
+          <label class="field compact">
+            <span>奶蛙顏色</span>
+            <input id="color" type="color" value="#f2d24b" />
+          </label>
+        </div>
+
+        <label class="check"><input id="limbs" type="checkbox" checked /> 小手小腳（積木風）</label>
+        <label class="check"><input id="transparent" type="checkbox" /> PNG 透明背景</label>
+
+        <div class="actions">
+          <button id="dl-png" class="primary" type="button">下載 PNG</button>
+          <button id="dl-svg" type="button">下載 SVG</button>
+        </div>
+        <p id="status" class="status" role="status"></p>
+      </section>
+
+      <section class="stage" aria-label="預覽">
+        <div id="preview" class="preview"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      字形筆畫資料：<a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a>
+      ／<a href="https://github.com/chanind/hanzi-writer-data" target="_blank" rel="noopener">hanzi-writer-data</a>（Arphic Public License）
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
